@@ -32,6 +32,9 @@ parseAtom = do
 		"#f" -> Bool False
 		_    -> Atom atom
 
+parseNumber :: Parser LispVal
+	liftM (Number . read) $ many1 digit
+
 readExpr :: String -> String
 readExpr input = case parse (spaces >> symbol) "lisp" input of
 	Left err -> "No match: " ++ show err
