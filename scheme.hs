@@ -44,6 +44,12 @@ parseExpr = parseAtom
 parseList :: Parser LispVal
 parseList = liftM List $ sepBy parseExpr spaces
 
+parseDottedList :: Parser LispVal
+parseDottedList = do
+	head <- endBy parseExpr spaces
+	tail <- char '.' >> spaces >> parseExpr
+	return $ DottedList head tail
+
 readExpr :: String -> String
 readExpr input = case parse parseExpr "lisp" input of
 	Left err -> "No match: " ++ show err
