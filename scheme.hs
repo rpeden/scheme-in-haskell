@@ -41,6 +41,9 @@ parseExpr = parseAtom
 		 <|> parseString
 		 <|> parseNumber
 
+parseList :: Parser LispVal
+parseList = liftM List $ sepBy parseExpr spaces
+
 readExpr :: String -> String
 readExpr input = case parse parseExpr "lisp" input of
 	Left err -> "No match: " ++ show err
